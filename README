@@ -1,0 +1,117 @@
+NAME
+    Lingua::JA::WordNet - Perl OO interface to Japanese WordNet database
+
+SYNOPSIS
+      use Lingua::JA::WordNet;
+
+      my $wn = Lingua::JA::WordNet->new('wnjpn-1.1.db');
+      my @synsets = $wn->Synset('相撲', 'jpn');
+      my @hypes   = $wn->Rel($synsets[0], 'hype');
+      my @words   = $wn->Word($hypes[0], 'jpn');
+
+      print "$words[0]\n";
+      # -> レスリング
+
+DESCRIPTION
+    Japanese WordNet is a semantic dictionary of Japanese.
+    Lingua::JA::WordNet is a yet another Perl module to look up entries in
+    Japanese WordNet.
+
+    The original Perl module is WordNet::Multi. WordNet::Multi is awkward to
+    use and not maintained. Because of this, I uploaded this module.
+
+METHODS
+    new($db_path) or new(%config)
+        Creates a new Lingua::JA::WordNet instance.
+
+          my $wn = Lingua::JA::WordNet->new(
+              data        => $db_path, # default is undef
+              enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
+          );
+
+        The data must be SQLite3 database. (Please download from
+        http://nlpwww.nict.go.jp/wn-ja.)
+
+    Word($synset, $lang)
+        Returns words corresponding to $synset and $lang.
+
+    Synset($word, $lang)
+        Returns synsets corresponding to $word and $lang.
+
+    SynPos($word, $pos, $lang)
+        Returns synsets corresponding to $word, $pos and $lang.
+
+    Rel($synset, $rel)
+        Returns relational synsets corresponding to $synset and $rel.
+
+    Def($synset, $lang)
+        Returns definition sentences corresponding to $synset and $lang.
+
+    Ex($synset, $lang)
+        Returns example sentences corresponding to $synset and $lang,
+
+    AllSynsets()
+        Returns all synsets.
+
+  LANGUAGES
+    The values which can be set to $lang are 'jpn' and 'eng'.
+
+  PARTS OF SPEECH
+    The values which can be set to $pos are left side values of the
+    following table.
+
+      a|adjective
+      r|adverb
+      n|noun
+      v|verb
+      a|形容詞
+      r|副詞
+      n|名詞
+      v|動詞
+
+    This is a result of SQLite3 command (SELECT pos, def FROM pos_def).
+
+  RELATIONS
+    The values which can be set to $rel are left side values of the
+    following table.
+
+      also|See also
+      syns|Synonyms
+      hype|Hypernyms
+      inst|Instances
+      hypo|Hyponym
+      hasi|Has Instance
+      mero|Meronyms
+      mmem|Meronyms --- Member
+      msub|Meronyms --- Substance
+      mprt|Meronyms --- Part
+      holo|Holonyms
+      hmem|Holonyms --- Member
+      hsub|Holonyms --- Substance
+      hprt|Holonyms -- Part
+      attr|Attributes
+      sim|Similar to
+      enta|Entails
+      caus|Causes
+      dmnc|Domain --- Category
+      dmnu|Domain --- Usage
+      dmnr|Domain --- Region
+      dmtc|In Domain --- Category
+      dmtu|In Domain --- Usage
+      dmtr|In Domain --- Region
+      ants|Antonyms
+
+    This is a result of SQLite3 command (SELECT link, def FROM link_def).
+
+AUTHOR
+    pawa- <pawa@dojikko.com>
+
+SEE ALSO
+    Japanese WordNet <http://nlpwww.nict.go.jp/wn-ja>
+
+LICENSE
+    Copyright (C) 2011 pawa All rights reserved.
+
+    This library is free software; you can redistribute it and/or modify it
+    under the same terms as Perl itself.
+
