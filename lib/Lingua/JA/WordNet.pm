@@ -335,7 +335,7 @@ This is a result of SQLite3 command (SELECT link, def FROM link_def).
 
 =head1 AUTHOR
 
-pawa- E<lt>pawa@dojikko.comE<gt>
+pawa- E<lt>pawapawa@cpan.orgE<gt>
 
 =head1 SEE ALSO
 

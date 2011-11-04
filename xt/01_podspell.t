@@ -6,7 +6,7 @@ $ENV{LANG} = 'C';
 all_pod_files_spelling_ok('lib');
 __DATA__
 pawa-
-pawa@dojikko.com
+pawapawa@cpan.org
 Lingua::JA::WordNet
 OO
 SQLite

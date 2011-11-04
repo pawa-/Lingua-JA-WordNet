@@ -104,7 +104,7 @@ METHODS
     This is a result of SQLite3 command (SELECT link, def FROM link_def).
 
 AUTHOR
-    pawa- <pawa@dojikko.com>
+    pawa- <pawapawa@cpan.org>
 
 SEE ALSO
     Japanese WordNet <http://nlpwww.nict.go.jp/wn-ja>
