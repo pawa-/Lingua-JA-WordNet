@@ -339,7 +339,7 @@ pawa- E<lt>pawa@dojikko.comE<gt>
 
 =head1 SEE ALSO
 
-Japanese WordNet <http://nlpwww.nict.go.jp/wn-ja>
+Japanese WordNet E<lt>http://nlpwww.nict.go.jp/wn-jaE<gt>
 
 =head1 LICENSE
 
