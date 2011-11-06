@@ -27,9 +27,10 @@ METHODS
           my $wn = Lingua::JA::WordNet->new(
               data        => $db_path, # default is undef
               enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
+              verbose     => 0,        # default is 0 (all warnings are ignored)
           );
 
-        The data must be SQLite3 database. (Please download from
+        The data must be a SQLite3 database. (Please download from
         http://nlpwww.nict.go.jp/wn-ja.)
 
     Word($synset, $lang)
@@ -40,6 +41,9 @@ METHODS
 
     SynPos($word, $pos, $lang)
         Returns synsets corresponding to $word, $pos and $lang.
+
+    Pos($synset)
+        Returns the part of speech of $synset.
 
     Rel($synset, $rel)
         Returns relational synsets corresponding to $synset and $rel.
@@ -104,7 +108,7 @@ METHODS
     This is a result of SQLite3 command (SELECT link, def FROM link_def).
 
 AUTHOR
-    pawa- <pawapawa@cpan.org>
+    pawa <pawapawa@cpan.org>
 
 SEE ALSO
     Japanese WordNet <http://nlpwww.nict.go.jp/wn-ja>

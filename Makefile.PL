@@ -8,6 +8,7 @@ requires      'DBI';
 requires      'DBD::SQLite' => 1.27; # sqlite_unicode
 test_requires 'Test::More'  => 0.88; # done_testing
 test_requires 'Test::Warn';
+test_requires 'Test::Exception';
 
 tests 't/*.t';
 author_tests 'xt';

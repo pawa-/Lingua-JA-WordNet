@@ -4,7 +4,10 @@ use Lingua::JA::WordNet;
 use Test::More;
 use Test::Warn;
 
-my $wn = Lingua::JA::WordNet->new('./wordnet/test.db');
+my $wn = Lingua::JA::WordNet->new(
+    data    => './wordnet/test.db',
+    verbose => 1,
+);
 
 my @exs = $wn->Ex('00000002-n', 'jpn');
 is($exs[0], 'るかるかにする');

@@ -4,7 +4,10 @@ use Lingua::JA::WordNet;
 use Test::More;
 use Test::Warn;
 
-my $wn = Lingua::JA::WordNet->new('./wordnet/test.db');
+my $wn = Lingua::JA::WordNet->new(
+    data    => './wordnet/test.db',
+    verbose => 1,
+);
 
 my @hypes = $wn->Rel('00000001-n', 'hype');
 is($hypes[0], '00000003-n');

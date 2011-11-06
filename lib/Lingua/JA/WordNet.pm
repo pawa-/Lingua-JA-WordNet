@@ -5,7 +5,7 @@ use warnings;
 use Carp;
 use DBI;
 
-our $VERSION = '0.02';
+our $VERSION = '0.03';
 
 
 sub new
@@ -20,6 +20,7 @@ sub new
     croak "WordNet data is not found"    if ! -e $args{data};
 
     $args{enable_utf8} = 0 if !exists $args{enable_utf8}; # default is 0
+    $args{verbose}     = 0 if !exists $args{verbose};     # default is 0
 
     my $dbh = DBI->connect("dbi:SQLite:dbname=$args{data}", "", "", {
         Warn           => 0, # get rid of annoying disconnect message
@@ -29,7 +30,7 @@ sub new
         sqlite_unicode => $args{enable_utf8},
     });
 
-    bless { dbh => $dbh }, $class;
+    bless { dbh => $dbh, verbose => $args{verbose} }, $class;
 }
 
 sub Word
@@ -46,9 +47,9 @@ sub Word
 
     $sth->execute($synset, $lang);
 
-    my @words = map { $_->[0] =~ s/_/ /g; $_->[0]; } @{$sth->fetchall_arrayref};
+    my @words = map { $_->[0] =~ s/_/ /go; $_->[0]; } @{$sth->fetchall_arrayref};
 
-    carp "Word: no words for $synset in $lang" if !scalar @words;
+    carp "Word: no words for $synset in $lang" if $self->{verbose} && !scalar @words;
 
     return @words;
 }
@@ -76,7 +77,7 @@ sub Synset
         push(@synsets, $synset);
     }
 
-    carp "Synset: no synsets for $word in $lang" if !scalar @synsets;
+    carp "Synset: no synsets for $word in $lang" if $self->{verbose} && !scalar @synsets;
 
     return @synsets;
 }
@@ -105,9 +106,17 @@ sub SynPos
         push(@synsets, $synset);
     }
 
-    carp "SynPos: no synsets for $word in $lang with pos: $pos" if !scalar @synsets;
+    carp "SynPos: no synsets for $word in $lang with pos: $pos" if $self->{verbose} && !scalar @synsets;
 
     return @synsets;
+}
+
+sub Pos
+{
+    my ($self, $synset) = @_;
+    return $1 if $synset =~ /^\d\d\d\d\d\d\d\d-([arnv])$/o;
+    carp "Pos: $synset is wrong synset format" if $self->{verbose};
+    return;
 }
 
 sub Rel
@@ -126,7 +135,7 @@ sub Rel
 
     my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
 
-    carp "Rel: no $rel links for $synset" if !scalar @synsets;
+    carp "Rel: no $rel links for $synset" if $self->{verbose} && !scalar @synsets;
 
     return @synsets;
 }
@@ -154,7 +163,7 @@ sub Def
         $defs[$sid] = $def;
     }
 
-    carp "Def: no definitions for $synset in $lang" if !scalar @defs;
+    carp "Def: no definitions for $synset in $lang" if $self->{verbose} && !scalar @defs;
 
     return @defs;
 }
@@ -182,7 +191,7 @@ sub Ex
         $exs[$sid] = $ex;
     }
 
-    carp "Ex: no examples for $synset in $lang" if !scalar @exs;
+    carp "Ex: no examples for $synset in $lang" if $self->{verbose} && !scalar @exs;
 
     return @exs;
 }
@@ -241,9 +250,10 @@ Creates a new Lingua::JA::WordNet instance.
   my $wn = Lingua::JA::WordNet->new(
       data        => $db_path, # default is undef
       enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
+      verbose     => 0,        # default is 0 (all warnings are ignored)
   );
 
-The data must be SQLite3 database.
+The data must be a SQLite3 database.
 (Please download from http://nlpwww.nict.go.jp/wn-ja.)
 
 
@@ -258,6 +268,10 @@ Returns synsets corresponding to $word and $lang.
 =item SynPos($word, $pos, $lang)
 
 Returns synsets corresponding to $word, $pos and $lang.
+
+=item Pos($synset)
+
+Returns the part of speech of $synset.
 
 =item Rel($synset, $rel)
 
@@ -335,7 +349,7 @@ This is a result of SQLite3 command (SELECT link, def FROM link_def).
 
 =head1 AUTHOR
 
-pawa- E<lt>pawapawa@cpan.orgE<gt>
+pawa E<lt>pawapawa@cpan.orgE<gt>
 
 =head1 SEE ALSO
 
