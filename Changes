@@ -1,5 +1,9 @@
 Revision history for Perl extension Lingua::JA::WordNet
 
+0.04    Mon, 14 May 2012 13:50:03 +0900
+        - improved documentation
+        - improved namespace pollutions
+
 0.03    Mon, 07 Nov 2011 00:14:50 +0900
         - added verbose option
         - added Pos method

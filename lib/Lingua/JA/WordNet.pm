@@ -7,7 +7,7 @@ use warnings;
 use Carp ();
 use DBI;
 
-our $VERSION = '0.03';
+our $VERSION = '0.04';
 
 
 sub new
@@ -255,8 +255,8 @@ Creates a new Lingua::JA::WordNet instance.
       verbose     => 0,        # default is 0 (all warnings are ignored)
   );
 
-The data must be a SQLite3 database.
-(Please download from http://nlpwww.nict.go.jp/wn-ja.)
+The data must be Japanese WordNet and English WordNet in an SQLite3 database.
+(Please download it from http://nlpwww.nict.go.jp/wn-ja)
 
 
 =item Word($synset, $lang)

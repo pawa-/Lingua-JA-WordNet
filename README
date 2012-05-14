@@ -30,8 +30,8 @@ METHODS
               verbose     => 0,        # default is 0 (all warnings are ignored)
           );
 
-        The data must be a SQLite3 database. (Please download from
-        http://nlpwww.nict.go.jp/wn-ja.)
+        The data must be Japanese WordNet and English WordNet in an SQLite3
+        database. (Please download it from http://nlpwww.nict.go.jp/wn-ja)
 
     Word($synset, $lang)
         Returns the words corresponding to $synset and $lang.
