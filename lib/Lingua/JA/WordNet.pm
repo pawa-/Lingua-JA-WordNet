@@ -1,8 +1,10 @@
 package Lingua::JA::WordNet;
+
 use 5.008_001;
 use strict;
 use warnings;
-use Carp;
+
+use Carp ();
 use DBI;
 
 our $VERSION = '0.03';
@@ -16,8 +18,8 @@ sub new
     if (scalar @_ == 1) { $args{data} = shift; }
     else                { %args       = @_;    }
 
-    croak "WordNet data path is not set" if !    $args{data};
-    croak "WordNet data is not found"    if ! -e $args{data};
+    Carp::croak "WordNet data path is not set" if !    $args{data};
+    Carp::croak "WordNet data is not found"    if ! -e $args{data};
 
     $args{enable_utf8} = 0 if !exists $args{enable_utf8}; # default is 0
     $args{verbose}     = 0 if !exists $args{verbose};     # default is 0
@@ -49,7 +51,7 @@ sub Word
 
     my @words = map { $_->[0] =~ s/_/ /go; $_->[0]; } @{$sth->fetchall_arrayref};
 
-    carp "Word: no words for $synset in $lang" if $self->{verbose} && !scalar @words;
+    Carp::carp "Word: no words for $synset in $lang" if $self->{verbose} && !scalar @words;
 
     return @words;
 }
@@ -77,7 +79,7 @@ sub Synset
         push(@synsets, $synset);
     }
 
-    carp "Synset: no synsets for $word in $lang" if $self->{verbose} && !scalar @synsets;
+    Carp::carp "Synset: no synsets for $word in $lang" if $self->{verbose} && !scalar @synsets;
 
     return @synsets;
 }
@@ -106,7 +108,7 @@ sub SynPos
         push(@synsets, $synset);
     }
 
-    carp "SynPos: no synsets for $word in $lang with pos: $pos" if $self->{verbose} && !scalar @synsets;
+    Carp::carp "SynPos: no synsets for $word in $lang with pos: $pos" if $self->{verbose} && !scalar @synsets;
 
     return @synsets;
 }
@@ -115,7 +117,7 @@ sub Pos
 {
     my ($self, $synset) = @_;
     return $1 if $synset =~ /^\d\d\d\d\d\d\d\d-([arnv])$/o;
-    carp "Pos: $synset is wrong synset format" if $self->{verbose};
+    Carp::carp "Pos: $synset is wrong synset format" if $self->{verbose};
     return;
 }
 
@@ -131,11 +133,11 @@ sub Rel
                 AND link    = ?'
         );
 
-    $sth->execute($synset,$rel);
+    $sth->execute($synset, $rel);
 
     my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
 
-    carp "Rel: no $rel links for $synset" if $self->{verbose} && !scalar @synsets;
+    Carp::carp "Rel: no $rel links for $synset" if $self->{verbose} && !scalar @synsets;
 
     return @synsets;
 }
@@ -163,7 +165,7 @@ sub Def
         $defs[$sid] = $def;
     }
 
-    carp "Def: no definitions for $synset in $lang" if $self->{verbose} && !scalar @defs;
+    Carp::carp "Def: no definitions for $synset in $lang" if $self->{verbose} && !scalar @defs;
 
     return @defs;
 }
@@ -191,7 +193,7 @@ sub Ex
         $exs[$sid] = $ex;
     }
 
-    carp "Ex: no examples for $synset in $lang" if $self->{verbose} && !scalar @exs;
+    Carp::carp "Ex: no examples for $synset in $lang" if $self->{verbose} && !scalar @exs;
 
     return @exs;
 }
@@ -232,7 +234,7 @@ my ($db_path, %config, $synset, $lang, $pos, $rel);
 =head1 DESCRIPTION
 
 Japanese WordNet is a semantic dictionary of Japanese.
-Lingua::JA::WordNet is a yet another Perl module to look up
+Lingua::JA::WordNet is yet another Perl module to look up
 entries in Japanese WordNet.
 
 The original Perl module is WordNet::Multi.
@@ -259,15 +261,15 @@ The data must be a SQLite3 database.
 
 =item Word($synset, $lang)
 
-Returns words corresponding to $synset and $lang.
+Returns the words corresponding to $synset and $lang.
 
 =item Synset($word, $lang)
 
-Returns synsets corresponding to $word and $lang.
+Returns the synsets corresponding to $word and $lang.
 
 =item SynPos($word, $pos, $lang)
 
-Returns synsets corresponding to $word, $pos and $lang.
+Returns the synsets corresponding to $word, $pos and $lang.
 
 =item Pos($synset)
 
@@ -275,15 +277,15 @@ Returns the part of speech of $synset.
 
 =item Rel($synset, $rel)
 
-Returns relational synsets corresponding to $synset and $rel.
+Returns the relational synsets corresponding to $synset and $rel.
 
 =item Def($synset, $lang)
 
-Returns definition sentences corresponding to $synset and $lang.
+Returns the definition sentences corresponding to $synset and $lang.
 
 =item Ex($synset, $lang)
 
-Returns example sentences corresponding to $synset and $lang,
+Returns the example sentences corresponding to $synset and $lang,
 
 =item AllSynsets()
 
@@ -311,7 +313,7 @@ The values which can be set to $pos are left side values of the following table.
   n|名詞
   v|動詞
 
-This is a result of SQLite3 command (SELECT pos, def FROM pos_def).
+This is the result of SQLite3 command 'SELECT pos, def FROM pos_def'.
 
 
 =head2 RELATIONS
@@ -344,7 +346,7 @@ The values which can be set to $rel are left side values of the following table.
   dmtr|In Domain --- Region
   ants|Antonyms
 
-This is a result of SQLite3 command (SELECT link, def FROM link_def).
+This is the result of SQLite3 command 'SELECT link, def FROM link_def'.
 
 
 =head1 AUTHOR
@@ -356,8 +358,6 @@ pawa E<lt>pawapawa@cpan.orgE<gt>
 Japanese WordNet E<lt>http://nlpwww.nict.go.jp/wn-jaE<gt>
 
 =head1 LICENSE
-
-Copyright (C) 2011 pawa All rights reserved.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
