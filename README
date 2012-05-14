@@ -14,7 +14,7 @@ SYNOPSIS
 
 DESCRIPTION
     Japanese WordNet is a semantic dictionary of Japanese.
-    Lingua::JA::WordNet is a yet another Perl module to look up entries in
+    Lingua::JA::WordNet is yet another Perl module to look up entries in
     Japanese WordNet.
 
     The original Perl module is WordNet::Multi. WordNet::Multi is awkward to
@@ -34,25 +34,25 @@ METHODS
         http://nlpwww.nict.go.jp/wn-ja.)
 
     Word($synset, $lang)
-        Returns words corresponding to $synset and $lang.
+        Returns the words corresponding to $synset and $lang.
 
     Synset($word, $lang)
-        Returns synsets corresponding to $word and $lang.
+        Returns the synsets corresponding to $word and $lang.
 
     SynPos($word, $pos, $lang)
-        Returns synsets corresponding to $word, $pos and $lang.
+        Returns the synsets corresponding to $word, $pos and $lang.
 
     Pos($synset)
         Returns the part of speech of $synset.
 
     Rel($synset, $rel)
-        Returns relational synsets corresponding to $synset and $rel.
+        Returns the relational synsets corresponding to $synset and $rel.
 
     Def($synset, $lang)
-        Returns definition sentences corresponding to $synset and $lang.
+        Returns the definition sentences corresponding to $synset and $lang.
 
     Ex($synset, $lang)
-        Returns example sentences corresponding to $synset and $lang,
+        Returns the example sentences corresponding to $synset and $lang,
 
     AllSynsets()
         Returns all synsets.
@@ -73,7 +73,7 @@ METHODS
       n|名詞
       v|動詞
 
-    This is a result of SQLite3 command (SELECT pos, def FROM pos_def).
+    This is the result of SQLite3 command 'SELECT pos, def FROM pos_def'.
 
   RELATIONS
     The values which can be set to $rel are left side values of the
@@ -105,7 +105,7 @@ METHODS
       dmtr|In Domain --- Region
       ants|Antonyms
 
-    This is a result of SQLite3 command (SELECT link, def FROM link_def).
+    This is the result of SQLite3 command 'SELECT link, def FROM link_def'.
 
 AUTHOR
     pawa <pawapawa@cpan.org>
@@ -114,8 +114,6 @@ SEE ALSO
     Japanese WordNet <http://nlpwww.nict.go.jp/wn-ja>
 
 LICENSE
-    Copyright (C) 2011 pawa All rights reserved.
-
     This library is free software; you can redistribute it and/or modify it
     under the same terms as Perl itself.
 
