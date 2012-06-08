@@ -290,12 +290,12 @@ Returns the example sentences corresponding to $synset and $lang,
 Returns all synsets.
 
 
-=head3 LANGUAGES
+=head2 LANGUAGES
 
 The values which can be set to $lang are 'jpn' and 'eng'.
 
 
-=head3 PARTS OF SPEECH
+=head2 PARTS OF SPEECH
 
 The values which can be set to $pos are left side values of the following table.
 
@@ -311,7 +311,7 @@ The values which can be set to $pos are left side values of the following table.
 This is the result of SQLite3 command 'SELECT pos, def FROM pos_def'.
 
 
-=head3 RELATIONS
+=head2 RELATIONS
 
 The values which can be set to $rel are left side values of the following table.
 

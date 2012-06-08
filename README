@@ -57,10 +57,10 @@ METHODS
   AllSynsets()
     Returns all synsets.
 
-   LANGUAGES
+  LANGUAGES
     The values which can be set to $lang are 'jpn' and 'eng'.
 
-   PARTS OF SPEECH
+  PARTS OF SPEECH
     The values which can be set to $pos are left side values of the
     following table.
 
@@ -75,7 +75,7 @@ METHODS
 
     This is the result of SQLite3 command 'SELECT pos, def FROM pos_def'.
 
-   RELATIONS
+  RELATIONS
     The values which can be set to $rel are left side values of the
     following table.
 
