@@ -7,7 +7,7 @@ use warnings;
 use Carp ();
 use DBI;
 
-our $VERSION = '0.04';
+our $VERSION = '0.05';
 
 
 sub new
@@ -243,9 +243,7 @@ Because of this, I uploaded this module.
 
 =head1 METHODS
 
-=over 4
-
-=item new($db_path) or new(%config)
+=head2 new($db_path) or new(%config)
 
 Creates a new Lingua::JA::WordNet instance.
 
@@ -256,51 +254,48 @@ Creates a new Lingua::JA::WordNet instance.
   );
 
 The data must be Japanese WordNet and English WordNet in an SQLite3 database.
-(Please download it from http://nlpwww.nict.go.jp/wn-ja)
+(Please download it from L<http://nlpwww.nict.go.jp/wn-ja/>)
 
 
-=item Word($synset, $lang)
+=head2 Word($synset, $lang)
 
 Returns the words corresponding to $synset and $lang.
 
-=item Synset($word, $lang)
+=head2 Synset($word, $lang)
 
 Returns the synsets corresponding to $word and $lang.
 
-=item SynPos($word, $pos, $lang)
+=head2 SynPos($word, $pos, $lang)
 
 Returns the synsets corresponding to $word, $pos and $lang.
 
-=item Pos($synset)
+=head2 Pos($synset)
 
 Returns the part of speech of $synset.
 
-=item Rel($synset, $rel)
+=head2 Rel($synset, $rel)
 
 Returns the relational synsets corresponding to $synset and $rel.
 
-=item Def($synset, $lang)
+=head2 Def($synset, $lang)
 
 Returns the definition sentences corresponding to $synset and $lang.
 
-=item Ex($synset, $lang)
+=head2 Ex($synset, $lang)
 
 Returns the example sentences corresponding to $synset and $lang,
 
-=item AllSynsets()
+=head2 AllSynsets()
 
 Returns all synsets.
 
 
-=back
-
-
-=head2 LANGUAGES
+=head3 LANGUAGES
 
 The values which can be set to $lang are 'jpn' and 'eng'.
 
 
-=head2 PARTS OF SPEECH
+=head3 PARTS OF SPEECH
 
 The values which can be set to $pos are left side values of the following table.
 
@@ -316,7 +311,7 @@ The values which can be set to $pos are left side values of the following table.
 This is the result of SQLite3 command 'SELECT pos, def FROM pos_def'.
 
 
-=head2 RELATIONS
+=head3 RELATIONS
 
 The values which can be set to $rel are left side values of the following table.
 
@@ -355,7 +350,7 @@ pawa E<lt>pawapawa@cpan.orgE<gt>
 
 =head1 SEE ALSO
 
-Japanese WordNet E<lt>http://nlpwww.nict.go.jp/wn-jaE<gt>
+Japanese WordNet: L<http://nlpwww.nict.go.jp/wn-ja/>
 
 =head1 LICENSE
 

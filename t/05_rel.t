@@ -23,7 +23,7 @@ my @hypos = $wn->Rel('00000003-n', 'hypo');
 
 for my $hypo (@hypos)
 {
-    like($hypo, qr/0000000[12]-n/);
+    like($hypo, qr/^0000000[12]-n$/);
 }
 
 done_testing;

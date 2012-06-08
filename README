@@ -21,46 +21,46 @@ DESCRIPTION
     use and not maintained. Because of this, I uploaded this module.
 
 METHODS
-    new($db_path) or new(%config)
-        Creates a new Lingua::JA::WordNet instance.
+  new($db_path) or new(%config)
+    Creates a new Lingua::JA::WordNet instance.
 
-          my $wn = Lingua::JA::WordNet->new(
-              data        => $db_path, # default is undef
-              enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
-              verbose     => 0,        # default is 0 (all warnings are ignored)
-          );
+      my $wn = Lingua::JA::WordNet->new(
+          data        => $db_path, # default is undef
+          enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
+          verbose     => 0,        # default is 0 (all warnings are ignored)
+      );
 
-        The data must be Japanese WordNet and English WordNet in an SQLite3
-        database. (Please download it from http://nlpwww.nict.go.jp/wn-ja)
+    The data must be Japanese WordNet and English WordNet in an SQLite3
+    database. (Please download it from <http://nlpwww.nict.go.jp/wn-ja/>)
 
-    Word($synset, $lang)
-        Returns the words corresponding to $synset and $lang.
+  Word($synset, $lang)
+    Returns the words corresponding to $synset and $lang.
 
-    Synset($word, $lang)
-        Returns the synsets corresponding to $word and $lang.
+  Synset($word, $lang)
+    Returns the synsets corresponding to $word and $lang.
 
-    SynPos($word, $pos, $lang)
-        Returns the synsets corresponding to $word, $pos and $lang.
+  SynPos($word, $pos, $lang)
+    Returns the synsets corresponding to $word, $pos and $lang.
 
-    Pos($synset)
-        Returns the part of speech of $synset.
+  Pos($synset)
+    Returns the part of speech of $synset.
 
-    Rel($synset, $rel)
-        Returns the relational synsets corresponding to $synset and $rel.
+  Rel($synset, $rel)
+    Returns the relational synsets corresponding to $synset and $rel.
 
-    Def($synset, $lang)
-        Returns the definition sentences corresponding to $synset and $lang.
+  Def($synset, $lang)
+    Returns the definition sentences corresponding to $synset and $lang.
 
-    Ex($synset, $lang)
-        Returns the example sentences corresponding to $synset and $lang,
+  Ex($synset, $lang)
+    Returns the example sentences corresponding to $synset and $lang,
 
-    AllSynsets()
-        Returns all synsets.
+  AllSynsets()
+    Returns all synsets.
 
-  LANGUAGES
+   LANGUAGES
     The values which can be set to $lang are 'jpn' and 'eng'.
 
-  PARTS OF SPEECH
+   PARTS OF SPEECH
     The values which can be set to $pos are left side values of the
     following table.
 
@@ -75,7 +75,7 @@ METHODS
 
     This is the result of SQLite3 command 'SELECT pos, def FROM pos_def'.
 
-  RELATIONS
+   RELATIONS
     The values which can be set to $rel are left side values of the
     following table.
 
@@ -111,7 +111,7 @@ AUTHOR
     pawa <pawapawa@cpan.org>
 
 SEE ALSO
-    Japanese WordNet <http://nlpwww.nict.go.jp/wn-ja>
+    Japanese WordNet: <http://nlpwww.nict.go.jp/wn-ja/>
 
 LICENSE
     This library is free software; you can redistribute it and/or modify it
