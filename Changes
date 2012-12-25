@@ -1,5 +1,10 @@
 Revision history for Perl extension Lingua::JA::WordNet
 
+0.10    Tue, 25 Dec 2012 21:27:27 +0900
+        - Bundled Japanese WordNet database file
+        - Added dependency on File::ShareDir
+        - Improved tests
+
 0.05    Fri, 08 Jun 2012 15:21:01 +0900
         - improved documentation
 

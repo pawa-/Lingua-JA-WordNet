@@ -8,7 +8,7 @@ use DBI;
 use Carp ();
 use File::ShareDir ();
 
-our $VERSION = '0.05';
+our $VERSION = '0.10';
 
 my $DB_FILE = 'wnjpn-1.1.db';
 
