@@ -4,7 +4,7 @@ NAME
 SYNOPSIS
       use Lingua::JA::WordNet;
 
-      my $wn = Lingua::JA::WordNet->new('wnjpn-1.1.db');
+      my $wn = Lingua::JA::WordNet->new;
       my @synsets = $wn->Synset('相撲', 'jpn');
       my @hypes   = $wn->Rel($synsets[0], 'hype');
       my @words   = $wn->Word($hypes[0], 'jpn');
@@ -18,51 +18,50 @@ DESCRIPTION
     Japanese WordNet.
 
     The original Perl module is WordNet::Multi. WordNet::Multi is awkward to
-    use and not maintained. Because of this, I uploaded this module.
+    use and no longer maintained. Because of this, I uploaded this module.
 
 METHODS
-  new($db_path) or new(%config)
+  $wn = new($db_path) or new(%config)
     Creates a new Lingua::JA::WordNet instance.
 
       my $wn = Lingua::JA::WordNet->new(
-          data        => $db_path, # default is undef
-          enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
+          data        => $db_path, # default is File::ShareDir::dist_file('Lingua-JA-WordNet', 'wnjpn-1.1.db')
+          enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of L<DBD::SQLite>)
           verbose     => 0,        # default is 0 (all warnings are ignored)
       );
 
     The data must be Japanese WordNet and English WordNet in an SQLite3
-    database. (Please download it from <http://nlpwww.nict.go.jp/wn-ja/>)
+    database.
 
-  Word($synset, $lang)
+  @words = $wn->Word($synset, $lang)
     Returns the words corresponding to $synset and $lang.
 
-  Synset($word, $lang)
+  @synsets = $wn->Synset($word, $lang)
     Returns the synsets corresponding to $word and $lang.
 
-  SynPos($word, $pos, $lang)
+  @synsets = $wn->SynPos($word, $pos, $lang)
     Returns the synsets corresponding to $word, $pos and $lang.
 
-  Pos($synset)
+  $pos = $wn->Pos($synset)
     Returns the part of speech of $synset.
 
-  Rel($synset, $rel)
+  @synsets = $wn->Rel($synset, $rel)
     Returns the relational synsets corresponding to $synset and $rel.
 
-  Def($synset, $lang)
+  @defs = $wn->Def($synset, $lang)
     Returns the definition sentences corresponding to $synset and $lang.
 
-  Ex($synset, $lang)
+  @exs = $wn->Ex($synset, $lang)
     Returns the example sentences corresponding to $synset and $lang,
 
-  AllSynsets()
+  @allsynsets = $wn->AllSynsets()
     Returns all synsets.
 
   LANGUAGES
-    The values which can be set to $lang are 'jpn' and 'eng'.
+    $lang can take 'jpn' or 'eng'.
 
   PARTS OF SPEECH
-    The values which can be set to $pos are left side values of the
-    following table.
+    $pos can take the left side values of the following table.
 
       a|adjective
       r|adverb
@@ -73,11 +72,10 @@ METHODS
       n|名詞
       v|動詞
 
-    This is the result of SQLite3 command 'SELECT pos, def FROM pos_def'.
+    This is the result of the SQL query 'SELECT pos, def FROM pos_def'.
 
   RELATIONS
-    The values which can be set to $rel are left side values of the
-    following table.
+    $rel can take the left side values of the following table.
 
       also|See also
       syns|Synonyms
@@ -105,7 +103,7 @@ METHODS
       dmtr|In Domain --- Region
       ants|Antonyms
 
-    This is the result of SQLite3 command 'SELECT link, def FROM link_def'.
+    This is the result of the SQL query 'SELECT link, def FROM link_def'.
 
 AUTHOR
     pawa <pawapawa@cpan.org>
@@ -113,7 +111,16 @@ AUTHOR
 SEE ALSO
     Japanese WordNet: <http://nlpwww.nict.go.jp/wn-ja/>
 
+    <http://twitter.com/LinguaJAWordNet>
+
 LICENSE
-    This library is free software; you can redistribute it and/or modify it
-    under the same terms as Perl itself.
+    This library except bundled WordNet database file is free software; you
+    can redistribute it and/or modify it under the same terms as Perl
+    itself.
+
+    The bundled WordNet database file complies with the following licenses:
+
+    *   For Japanese data: <http://nlpwww.nict.go.jp/wn-ja/license.txt>
+
+    *   For English data: <http://wordnet.princeton.edu/wordnet/license/>
 
