@@ -5,25 +5,18 @@ use Test::More;
 use Test::Warn;
 
 my $wn = Lingua::JA::WordNet->new(
-    data    => './wordnet/test.db',
     verbose => 1,
 );
 
-my @hypes = $wn->Rel('00000001-n', 'hype');
-is($hypes[0], '00000003-n');
+my @hypes = $wn->Rel('00448232-n', 'hype');
+is_deeply(\@hypes, [qw/00447540-n 00433216-n/]);
 
-@hypes = $wn->Rel('00000002-n', 'hype');
-is($hypes[0], '00000003-n');
+my @dmnrs = $wn->Rel('00448232-n', 'dmnr');
+is_deeply(\@dmnrs, [qw/08921850-n/]);
 
-warning_is { @hypes = $wn->Rel('00000003-n', 'hype') }
-    'Rel: no hype links for 00000003-n', 'rel of unknown synset';
+warning_is { @hypes = $wn->Rel('hogehoge-n', 'hype') }
+    'Rel: there are no hype links for hogehoge-n', 'rel of unknown synset';
 
-
-my @hypos = $wn->Rel('00000003-n', 'hypo');
-
-for my $hypo (@hypos)
-{
-    like($hypo, qr/^0000000[12]-n$/);
-}
+is(scalar @hypes, 0);
 
 done_testing;

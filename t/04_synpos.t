@@ -5,15 +5,17 @@ use Test::More;
 use Test::Warn;
 
 my $wn = Lingua::JA::WordNet->new(
-    data    => './wordnet/test.db',
     verbose => 1,
 );
 
-my @synsets = $wn->SynPos('ルカ', 'n', 'jpn');
-is($synsets[0], '00000002-n');
+my @synsets = $wn->SynPos('野球', 'n', 'jpn');
+is_deeply(\@synsets, [qw/00476140-n 00471613-n/]);
+
+@synsets = $wn->SynPos('baseball', 'n', 'eng');
+is_deeply(\@synsets, [qw/00471613-n 02799071-n/]);
 
 warning_is { @synsets = $wn->SynPos('Perl', 'n', 'jpn') }
-    'SynPos: no synsets for Perl in jpn with pos: n', 'synpos of unknown word';
+    "SynPos: there are no synsets for Perl corresponding to 'n' and 'jpn'", 'synpos of unknown word';
 
 is(scalar @synsets, 0);
 

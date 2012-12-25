@@ -5,18 +5,22 @@ use Test::More;
 use Test::Warn;
 
 my $wn = Lingua::JA::WordNet->new(
-    data    => './wordnet/test.db',
     verbose => 1,
 );
 
-my @exs = $wn->Ex('00000002-n', 'jpn');
-is($exs[0], 'るかるかにする');
-is($exs[1], '動画投稿サイトでタコのようなルカを見た');
+my @exs = $wn->Ex('00810729-v', 'jpn');
+is($exs[0], '彼女は悪事を見つけられずにすませます！');
+is($exs[1], '私は、これらの責任下から逃れることができなかった');
+is(scalar @exs, 2);
+
+@exs = $wn->Ex('00810729-v', 'eng');
+is($exs[0], 'She gets away with murder!');
+is($exs[1],  "I couldn't get out from under these responsibilities");
 is(scalar @exs, 2);
 
 warning_is { @exs = $wn->Ex('12345678-v', 'eng') }
-    'Ex: no examples for 12345678-v in eng',
-    'examples of unknown synset';
+    'Ex: there are no example sentences for 12345678-v in eng',
+    'example sentences of unknown synset';
 
 is(scalar @exs, 0);
 

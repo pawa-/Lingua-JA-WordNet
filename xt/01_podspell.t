@@ -10,6 +10,7 @@ pawapawa@cpan.org
 Lingua::JA::WordNet
 OO
 SQLite
+SQL
 eng
 jpn
 pos

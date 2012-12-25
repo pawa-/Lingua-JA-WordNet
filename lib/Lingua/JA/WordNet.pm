@@ -4,36 +4,60 @@ use 5.008_001;
 use strict;
 use warnings;
 
-use Carp ();
 use DBI;
+use Carp ();
+use File::ShareDir ();
 
 our $VERSION = '0.05';
 
+my $DB_FILE = 'wnjpn-1.1.db';
+
+
+sub _options
+{
+    return {
+        data        => File::ShareDir::dist_file('Lingua-JA-WordNet', $DB_FILE),
+        enable_utf8 => 0,
+        verbose     => 0,
+    };
+}
 
 sub new
 {
     my $class = shift;
-    my %args;
 
-    if (scalar @_ == 1) { $args{data} = shift; }
-    else                { %args       = @_;    }
+    my $options = $class->_options;
 
-    Carp::croak "WordNet data path is not set" if !    $args{data};
-    Carp::croak "WordNet data is not found"    if ! -e $args{data};
+    if (scalar @_ == 1) { $options->{data} = shift; }
+    else
+    {
+        my %args = @_;
 
-    $args{enable_utf8} = 0 if !exists $args{enable_utf8}; # default is 0
-    $args{verbose}     = 0 if !exists $args{verbose};     # default is 0
+        for my $key (keys %args)
+        {
+            if ( ! exists $options->{$key} ) { Carp::croak "Unknown option: '$key'"; }
+            else                             { $options->{$key} = $args{$key};       }
+        }
+    }
 
-    my $dbh = DBI->connect("dbi:SQLite:dbname=$args{data}", "", "", {
-        Warn           => 0, # get rid of annoying disconnect message
+    Carp::croak 'WordNet data file is not found' unless -f $options->{data};
+
+    my $dbh = DBI->connect("dbi:SQLite:dbname=$options->{data}", '', '', {
+        #Warn           => 0, # get rid of annoying disconnect message
+        # The Warn attribute enables useful warnings for certain bad practices.
+        # It is enabled by default and should only be disabled in rare circumstances.
+        # (see http://search.cpan.org/dist/DBI/DBI.pm#Warn)
+
         RaiseError     => 1,
         PrintError     => 0,
         AutoCommit     => 0,
-        sqlite_unicode => $args{enable_utf8},
+        sqlite_unicode => $options->{enable_utf8},
     });
 
-    bless { dbh => $dbh, verbose => $args{verbose} }, $class;
+    bless { dbh => $dbh, verbose => $options->{verbose} }, $class;
 }
+
+sub DESTROY { shift->{dbh}->disconnect; }
 
 sub Word
 {
@@ -49,9 +73,9 @@ sub Word
 
     $sth->execute($synset, $lang);
 
-    my @words = map { $_->[0] =~ s/_/ /go; $_->[0]; } @{$sth->fetchall_arrayref};
+    my @words = map { $_->[0] =~ s/_/ /g; $_->[0]; } @{$sth->fetchall_arrayref};
 
-    Carp::carp "Word: no words for $synset in $lang" if $self->{verbose} && !scalar @words;
+    Carp::carp "Word: there are no words for $synset in $lang" if $self->{verbose} && ! scalar @words;
 
     return @words;
 }
@@ -79,7 +103,7 @@ sub Synset
         push(@synsets, $synset);
     }
 
-    Carp::carp "Synset: no synsets for $word in $lang" if $self->{verbose} && !scalar @synsets;
+    Carp::carp "Synset: there are no synsets for $word in $lang" if $self->{verbose} && ! scalar @synsets;
 
     return @synsets;
 }
@@ -108,7 +132,7 @@ sub SynPos
         push(@synsets, $synset);
     }
 
-    Carp::carp "SynPos: no synsets for $word in $lang with pos: $pos" if $self->{verbose} && !scalar @synsets;
+    Carp::carp "SynPos: there are no synsets for $word corresponding to '$pos' and '$lang'" if $self->{verbose} && ! scalar @synsets;
 
     return @synsets;
 }
@@ -116,8 +140,8 @@ sub SynPos
 sub Pos
 {
     my ($self, $synset) = @_;
-    return $1 if $synset =~ /^\d\d\d\d\d\d\d\d-([arnv])$/o;
-    Carp::carp "Pos: $synset is wrong synset format" if $self->{verbose};
+    return $1 if $synset =~ /^[0-9]{8}-([arnv])$/;
+    Carp::carp "Pos: '$synset' is wrong synset format" if $self->{verbose};
     return;
 }
 
@@ -137,7 +161,7 @@ sub Rel
 
     my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
 
-    Carp::carp "Rel: no $rel links for $synset" if $self->{verbose} && !scalar @synsets;
+    Carp::carp "Rel: there are no $rel links for $synset" if $self->{verbose} && ! scalar @synsets;
 
     return @synsets;
 }
@@ -165,7 +189,7 @@ sub Def
         $defs[$sid] = $def;
     }
 
-    Carp::carp "Def: no definitions for $synset in $lang" if $self->{verbose} && !scalar @defs;
+    Carp::carp "Def: there are no definition sentences for $synset in $lang" if $self->{verbose} && ! scalar @defs;
 
     return @defs;
 }
@@ -193,7 +217,7 @@ sub Ex
         $exs[$sid] = $ex;
     }
 
-    Carp::carp "Ex: no examples for $synset in $lang" if $self->{verbose} && !scalar @exs;
+    Carp::carp "Ex: there are no example sentences for $synset in $lang" if $self->{verbose} && ! scalar @exs;
 
     return @exs;
 }
@@ -223,7 +247,7 @@ my ($db_path, %config, $synset, $lang, $pos, $rel);
 
   use Lingua::JA::WordNet;
 
-  my $wn = Lingua::JA::WordNet->new('wnjpn-1.1.db');
+  my $wn = Lingua::JA::WordNet->new;
   my @synsets = $wn->Synset('相撲', 'jpn');
   my @hypes   = $wn->Rel($synsets[0], 'hype');
   my @words   = $wn->Word($hypes[0], 'jpn');
@@ -238,66 +262,65 @@ Lingua::JA::WordNet is yet another Perl module to look up
 entries in Japanese WordNet.
 
 The original Perl module is WordNet::Multi.
-WordNet::Multi is awkward to use and not maintained.
+WordNet::Multi is awkward to use and no longer maintained.
 Because of this, I uploaded this module.
 
 =head1 METHODS
 
-=head2 new($db_path) or new(%config)
+=head2 $wn = new($db_path) or new(%config)
 
 Creates a new Lingua::JA::WordNet instance.
 
   my $wn = Lingua::JA::WordNet->new(
-      data        => $db_path, # default is undef
-      enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
+      data        => $db_path, # default is File::ShareDir::dist_file('Lingua-JA-WordNet', 'wnjpn-1.1.db')
+      enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of L<DBD::SQLite>)
       verbose     => 0,        # default is 0 (all warnings are ignored)
   );
 
 The data must be Japanese WordNet and English WordNet in an SQLite3 database.
-(Please download it from L<http://nlpwww.nict.go.jp/wn-ja/>)
 
 
-=head2 Word($synset, $lang)
+=head2 @words = $wn->Word($synset, $lang)
 
 Returns the words corresponding to $synset and $lang.
 
-=head2 Synset($word, $lang)
+=head2 @synsets = $wn->Synset($word, $lang)
 
 Returns the synsets corresponding to $word and $lang.
 
-=head2 SynPos($word, $pos, $lang)
+=head2 @synsets = $wn->SynPos($word, $pos, $lang)
 
 Returns the synsets corresponding to $word, $pos and $lang.
 
-=head2 Pos($synset)
+=head2 $pos = $wn->Pos($synset)
 
 Returns the part of speech of $synset.
 
-=head2 Rel($synset, $rel)
+=head2 @synsets = $wn->Rel($synset, $rel)
 
 Returns the relational synsets corresponding to $synset and $rel.
 
-=head2 Def($synset, $lang)
+=head2 @defs = $wn->Def($synset, $lang)
 
 Returns the definition sentences corresponding to $synset and $lang.
 
-=head2 Ex($synset, $lang)
+=head2 @exs = $wn->Ex($synset, $lang)
 
 Returns the example sentences corresponding to $synset and $lang,
 
-=head2 AllSynsets()
+=head2 @allsynsets = $wn->AllSynsets()
 
 Returns all synsets.
 
 
 =head2 LANGUAGES
 
-The values which can be set to $lang are 'jpn' and 'eng'.
+$lang can take 'jpn' or 'eng'.
 
 
 =head2 PARTS OF SPEECH
 
-The values which can be set to $pos are left side values of the following table.
+$pos can take the left side values of the following table.
 
   a|adjective
   r|adverb
@@ -308,12 +331,12 @@ The values which can be set to $pos are left side values of the following table.
   n|名詞
   v|動詞
 
-This is the result of SQLite3 command 'SELECT pos, def FROM pos_def'.
+This is the result of the SQL query 'SELECT pos, def FROM pos_def'.
 
 
 =head2 RELATIONS
 
-The values which can be set to $rel are left side values of the following table.
+$rel can take the left side values of the following table.
 
   also|See also
   syns|Synonyms
@@ -341,7 +364,7 @@ The values which can be set to $rel are left side values of the following table.
   dmtr|In Domain --- Region
   ants|Antonyms
 
-This is the result of SQLite3 command 'SELECT link, def FROM link_def'.
+This is the result of the SQL query 'SELECT link, def FROM link_def'.
 
 
 =head1 AUTHOR
@@ -352,9 +375,22 @@ pawa E<lt>pawapawa@cpan.orgE<gt>
 
 Japanese WordNet: L<http://nlpwww.nict.go.jp/wn-ja/>
 
+L<http://twitter.com/LinguaJAWordNet>
+
 =head1 LICENSE
 
-This library is free software; you can redistribute it and/or modify
+This library except bundled WordNet database file is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
+
+The bundled WordNet database file complies with the following licenses:
+
+=over 4
+
+=item * For Japanese data: L<http://nlpwww.nict.go.jp/wn-ja/license.txt>
+
+=item * For English data: L<http://wordnet.princeton.edu/wordnet/license/>
+
+=back
+
 
 =cut

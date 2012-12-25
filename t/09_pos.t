@@ -5,7 +5,6 @@ use Test::More;
 use Test::Warn;
 
 my $wn = Lingua::JA::WordNet->new(
-    data    => './wordnet/test.db',
     verbose => 1,
 );
 
@@ -18,21 +17,21 @@ my $pos = 'n';
 
 
 warning_is { $pos = $wn->Pos('00000005-z') }
-    'Pos: 00000005-z is wrong synset format',
+    "Pos: '00000005-z' is wrong synset format",
     'strange synset format';
 
 is($pos, undef);
 
 
 warning_is { $pos = $wn->Pos('000000001-n') }
-    'Pos: 000000001-n is wrong synset format',
+    "Pos: '000000001-n' is wrong synset format",
     'strange synset format';
 
 is($pos, undef);
 
 
 warning_is { $pos = $wn->Pos('miku') }
-    'Pos: miku is wrong synset format',
+    "Pos: 'miku' is wrong synset format",
     'strange synset format';
 
 is($pos, undef);
