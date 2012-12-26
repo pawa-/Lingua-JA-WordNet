@@ -243,9 +243,9 @@ my ($db_path, %config, $synset, $lang, $pos, $rel);
   use Lingua::JA::WordNet;
 
   my $wn = Lingua::JA::WordNet->new;
-  my @synsets = $wn->Synset('相撲', 'jpn');
+  my @synsets = $wn->Synset('相撲');
   my @hypes   = $wn->Rel($synsets[0], 'hype');
-  my @words   = $wn->Word($hypes[0], 'jpn');
+  my @words   = $wn->Word($hypes[0]);
 
   print "$words[0]\n";
   # -> レスリング
