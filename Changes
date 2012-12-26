@@ -1,5 +1,10 @@
 Revision history for Perl extension Lingua::JA::WordNet
 
+0.11    Wed, 26 Dec 2012 19:54:26 +0900
+        - Changed the return value of Allsynsets() from array to arrayref
+        - Set 'jpn' to default value of $lang
+        - Improved performance slightly
+
 0.10    Tue, 25 Dec 2012 21:27:27 +0900
         - Bundled Japanese WordNet database file
         - Added dependency on File::ShareDir
