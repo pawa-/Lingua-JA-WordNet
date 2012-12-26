@@ -94,14 +94,7 @@ sub Synset
 
     $sth->execute($word, $lang);
 
-    my (@synsets, $synset);
-
-    $sth->bind_columns( \($synset) );
-
-    while ($sth->fetchrow_arrayref)
-    {
-        push(@synsets, $synset);
-    }
+    my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
 
     Carp::carp "Synset: there are no synsets for $word in $lang" if $self->{verbose} && ! scalar @synsets;
 
@@ -123,14 +116,7 @@ sub SynPos
 
     $sth->execute($word, $pos, $lang);
 
-    my (@synsets, $synset);
-
-    $sth->bind_columns( \($synset) );
-
-    while ($sth->fetchrow_arrayref)
-    {
-        push(@synsets, $synset);
-    }
+    my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
 
     Carp::carp "SynPos: there are no synsets for $word corresponding to '$pos' and '$lang'" if $self->{verbose} && ! scalar @synsets;
 
@@ -180,12 +166,11 @@ sub Def
 
     $sth->execute($synset, $lang);
 
-    my (@defs, $sid, $def);
+    my @defs;
 
-    $sth->bind_columns( \($sid, $def) );
-
-    while ($sth->fetchrow_arrayref)
+    while (my $row = $sth->fetchrow_arrayref)
     {
+        my ($sid, $def) = @{$row};
         $defs[$sid] = $def;
     }
 
@@ -208,12 +193,11 @@ sub Ex
 
     $sth->execute($synset, $lang);
 
-    my (@exs, $sid, $ex);
+    my @exs;
 
-    $sth->bind_columns( \($sid, $ex) );
-
-    while ($sth->fetchrow_arrayref)
+    while (my $row = $sth->fetchrow_arrayref)
     {
+        my ($sid, $ex) = @{$row};
         $exs[$sid] = $ex;
     }
 
@@ -228,10 +212,11 @@ sub AllSynsets
     my $sth = $self->{dbh}->prepare('SELECT synset FROM synset');
     $sth->execute;
     my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
-    return @synsets;
+    return \@synsets;
 }
 
 1;
+
 __END__
 
 =encoding utf8

@@ -5,9 +5,9 @@ use Test::More;
 
 my $wn = Lingua::JA::WordNet->new;
 
-my @allsynsets = $wn->AllSynsets;
+my $allsynsets_arrayref = $wn->AllSynsets;
 
-for my $synset (@allsynsets)
+for my $synset (@{$allsynsets_arrayref})
 {
     like($synset, qr/^[0-9]{8}-[arnv]$/, 'format check');
 }
