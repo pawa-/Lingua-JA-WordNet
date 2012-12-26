@@ -258,7 +258,7 @@ Creates a new Lingua::JA::WordNet instance.
 
   my $wn = Lingua::JA::WordNet->new(
       data        => $db_path, # default is File::ShareDir::dist_file('Lingua-JA-WordNet', 'wnjpn-1.1.db')
-      enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of L<DBD::SQLite>)
+      enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
       verbose     => 0,        # default is 0 (all warnings are ignored)
   );
 
