@@ -63,6 +63,8 @@ sub Word
 {
     my ($self, $synset, $lang) = @_;
 
+    $lang = 'jpn' unless defined $lang;
+
     my $sth
         = $self->{dbh}->prepare
         (
@@ -84,6 +86,8 @@ sub Synset
 {
     my ($self, $word, $lang) = @_;
 
+    $lang = 'jpn' unless defined $lang;
+
     my $sth
         = $self->{dbh}->prepare
         (
@@ -104,6 +108,8 @@ sub Synset
 sub SynPos
 {
     my ($self, $word, $pos, $lang) = @_;
+
+    $lang = 'jpn' unless defined $lang;
 
     my $sth
         = $self->{dbh}->prepare
@@ -156,6 +162,8 @@ sub Def
 {
     my ($self, $synset, $lang) = @_;
 
+    $lang = 'jpn' unless defined $lang;
+
     my $sth
         = $self->{dbh}->prepare
         (
@@ -182,6 +190,8 @@ sub Def
 sub Ex
 {
     my ($self, $synset, $lang) = @_;
+
+    $lang = 'jpn' unless defined $lang;
 
     my $sth
         = $self->{dbh}->prepare
@@ -265,15 +275,15 @@ Creates a new Lingua::JA::WordNet instance.
 The data must be Japanese WordNet and English WordNet in an SQLite3 database.
 
 
-=head2 @words = $wn->Word($synset, $lang)
+=head2 @words = $wn->Word( $synset [, $lang] )
 
 Returns the words corresponding to $synset and $lang.
 
-=head2 @synsets = $wn->Synset($word, $lang)
+=head2 @synsets = $wn->Synset( $word [, $lang] )
 
 Returns the synsets corresponding to $word and $lang.
 
-=head2 @synsets = $wn->SynPos($word, $pos, $lang)
+=head2 @synsets = $wn->SynPos( $word, $pos [, $lang] )
 
 Returns the synsets corresponding to $word, $pos and $lang.
 
@@ -285,22 +295,22 @@ Returns the part of speech of $synset.
 
 Returns the relational synsets corresponding to $synset and $rel.
 
-=head2 @defs = $wn->Def($synset, $lang)
+=head2 @defs = $wn->Def( $synset [, $lang] )
 
 Returns the definition sentences corresponding to $synset and $lang.
 
-=head2 @exs = $wn->Ex($synset, $lang)
+=head2 @exs = $wn->Ex( $synset [, $lang] )
 
 Returns the example sentences corresponding to $synset and $lang,
 
-=head2 @allsynsets = $wn->AllSynsets()
+=head2 $allsynsets_arrayref = $wn->AllSynsets()
 
 Returns all synsets.
 
 
 =head2 LANGUAGES
 
-$lang can take 'jpn' or 'eng'.
+$lang can take 'jpn' or 'eng'. The default value is 'jpn'.
 
 
 =head2 PARTS OF SPEECH

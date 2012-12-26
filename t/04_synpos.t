@@ -8,7 +8,10 @@ my $wn = Lingua::JA::WordNet->new(
     verbose => 1,
 );
 
-my @synsets = $wn->SynPos('野球', 'n', 'jpn');
+my @synsets = $wn->SynPos('野球', 'n');
+is_deeply(\@synsets, [qw/00476140-n 00471613-n/]);
+
+@synsets = $wn->SynPos('野球', 'n', 'jpn');
 is_deeply(\@synsets, [qw/00476140-n 00471613-n/]);
 
 @synsets = $wn->SynPos('baseball', 'n', 'eng');

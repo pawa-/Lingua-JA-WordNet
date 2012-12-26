@@ -26,20 +26,20 @@ METHODS
 
       my $wn = Lingua::JA::WordNet->new(
           data        => $db_path, # default is File::ShareDir::dist_file('Lingua-JA-WordNet', 'wnjpn-1.1.db')
-          enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of L<DBD::SQLite>)
+          enable_utf8 => 1,        # default is 0 (see sqlite_unicode attribute of DBD::SQLite)
           verbose     => 0,        # default is 0 (all warnings are ignored)
       );
 
     The data must be Japanese WordNet and English WordNet in an SQLite3
     database.
 
-  @words = $wn->Word($synset, $lang)
+  @words = $wn->Word( $synset [, $lang] )
     Returns the words corresponding to $synset and $lang.
 
-  @synsets = $wn->Synset($word, $lang)
+  @synsets = $wn->Synset( $word [, $lang] )
     Returns the synsets corresponding to $word and $lang.
 
-  @synsets = $wn->SynPos($word, $pos, $lang)
+  @synsets = $wn->SynPos( $word, $pos [, $lang] )
     Returns the synsets corresponding to $word, $pos and $lang.
 
   $pos = $wn->Pos($synset)
@@ -48,17 +48,17 @@ METHODS
   @synsets = $wn->Rel($synset, $rel)
     Returns the relational synsets corresponding to $synset and $rel.
 
-  @defs = $wn->Def($synset, $lang)
+  @defs = $wn->Def( $synset [, $lang] )
     Returns the definition sentences corresponding to $synset and $lang.
 
-  @exs = $wn->Ex($synset, $lang)
+  @exs = $wn->Ex( $synset [, $lang] )
     Returns the example sentences corresponding to $synset and $lang,
 
-  @allsynsets = $wn->AllSynsets()
+  $allsynsets_arrayref = $wn->AllSynsets()
     Returns all synsets.
 
   LANGUAGES
-    $lang can take 'jpn' or 'eng'.
+    $lang can take 'jpn' or 'eng'. The default value is 'jpn'.
 
   PARTS OF SPEECH
     $pos can take the left side values of the following table.

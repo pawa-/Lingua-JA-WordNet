@@ -32,4 +32,18 @@ subtest 'disable_utf8' => sub {
     cmp_ok(length $exs[0], '>', '19');
 };
 
+subtest 'enable_utf8 and omit $lang' => sub {
+    my $wn = Lingua::JA::WordNet->new(
+        enable_utf8 => 1,
+    );
+
+    my @synsets = $wn->Synset('相撲');
+    my @words = $wn->Word($synsets[0]);
+    is($words[0], '大相撲');
+
+    my @exs = $wn->Ex('00810729-v');
+    is($exs[0], '彼女は悪事を見つけられずにすませます！');
+    is(length $exs[0], '19');
+};
+
 done_testing;

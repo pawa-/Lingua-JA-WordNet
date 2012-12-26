@@ -8,7 +8,10 @@ my $wn = Lingua::JA::WordNet->new(
     verbose => 1,
 );
 
-my @synsets = $wn->Synset('相撲', 'jpn');
+my @synsets = $wn->Synset('相撲');
+is_deeply(\@synsets, [qw/00448232-n 10674713-n/]);
+
+@synsets = $wn->Synset('相撲', 'jpn');
 is_deeply(\@synsets, [qw/00448232-n 10674713-n/]);
 
 @synsets = $wn->Synset('sumo', 'eng');

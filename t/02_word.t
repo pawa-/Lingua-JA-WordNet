@@ -8,7 +8,10 @@ my $wn = Lingua::JA::WordNet->new(
     verbose => 1
 );
 
-my @words = $wn->Word('00448232-n', 'jpn');
+my @words = $wn->Word('00448232-n');
+is_deeply(\@words, [qw/大相撲 角力 角技 相撲/]);
+
+@words = $wn->Word('00448232-n', 'jpn');
 is_deeply(\@words, [qw/大相撲 角力 角技 相撲/]);
 
 @words = $wn->Word('00448232-n', 'eng');

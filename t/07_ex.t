@@ -8,7 +8,12 @@ my $wn = Lingua::JA::WordNet->new(
     verbose => 1,
 );
 
-my @exs = $wn->Ex('00810729-v', 'jpn');
+my @exs = $wn->Ex('00810729-v');
+is($exs[0], '彼女は悪事を見つけられずにすませます！');
+is($exs[1], '私は、これらの責任下から逃れることができなかった');
+is(scalar @exs, 2);
+
+@exs = $wn->Ex('00810729-v', 'jpn');
 is($exs[0], '彼女は悪事を見つけられずにすませます！');
 is($exs[1], '私は、これらの責任下から逃れることができなかった');
 is(scalar @exs, 2);
