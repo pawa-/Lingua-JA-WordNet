@@ -1,5 +1,9 @@
 Revision history for Perl extension Lingua::JA::WordNet
 
+0.12    Thu, 27 Dec 2012 09:40:31 +0900
+        - Updated bundled Japanese WordNet database file from Ver.1.0 to Ver.1.1
+        ( 'wnjpn-1.1.db' was actually Ver.1.0. (*_*) )
+
 0.11    Wed, 26 Dec 2012 19:54:26 +0900
         - Changed the return value of Allsynsets() from array to arrayref
         - Set 'jpn' to default value of $lang
