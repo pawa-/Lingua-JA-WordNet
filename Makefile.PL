@@ -7,6 +7,7 @@ configure_requires 'File::ShareDir';
 requires           'Carp';
 requires           'DBI';
 requires           'DBD::SQLite' => 1.27; # sqlite_unicode
+requires           'List::MoreUtils';
 test_requires      'Test::More'  => 0.98;
 test_requires      'Test::Warn';
 test_requires      'Test::Exception';
