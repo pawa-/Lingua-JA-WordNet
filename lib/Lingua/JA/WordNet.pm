@@ -251,7 +251,7 @@ sub WordID
     return $wordid;
 }
 
-sub Synonyms
+sub Synonym
 {
     my ($self, $wordid) = @_;
 

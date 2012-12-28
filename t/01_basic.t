@@ -6,7 +6,7 @@ use Test::Exception;
 
 my $wn = Lingua::JA::WordNet->new;
 isa_ok($wn, 'Lingua::JA::WordNet');
-can_ok('Lingua::JA::WordNet', qw/Word Synset SynPos Pos Rel Def Ex AllSynsets WordID Synonyms/);
+can_ok('Lingua::JA::WordNet', qw/Word Synset SynPos Pos Rel Def Ex AllSynsets WordID Synonym/);
 
 throws_ok { Lingua::JA::WordNet->new('./hoge/hage/hige.db'); } qr/WordNet data file is not found/;
 throws_ok { Lingua::JA::WordNet->new('./share/');            } qr/WordNet data file is not found/;

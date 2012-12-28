@@ -13,7 +13,7 @@ warning_is { $wn->Def('peropero', 'jpn') } '';
 warning_is { $wn->Ex('mochimochi', 'jpn') } '';
 warning_is { $wn->Pos('fuwafuwa') } '';
 warning_is { $wn->WordID('mikumiku') } '';
-warning_is { $wn->Synonyms('rukaruka') } '';
+warning_is { $wn->Synonym('rukaruka') } '';
 
 $wn = Lingua::JA::WordNet->new; # default value of verbose option is 0
 warning_is { $wn->Word('hogehoge', 'jpn') } '';
@@ -24,6 +24,6 @@ warning_is { $wn->Def('peropero', 'jpn') } '';
 warning_is { $wn->Ex('mochimochi', 'jpn') } '';
 warning_is { $wn->Pos('fuwafuwa') } '';
 warning_is { $wn->WordID('mikumiku') } '';
-warning_is { $wn->Synonyms('rukaruka') } '';
+warning_is { $wn->Synonym('rukaruka') } '';
 
 done_testing;
