@@ -1,16 +1,17 @@
 package Lingua::JA::WordNet;
 
-use 5.008_001;
+use 5.008_008;
 use strict;
 use warnings;
 
 use DBI;
 use Carp ();
-use File::ShareDir ();
+use File::ShareDir  ();
+use List::MoreUtils ();
 
 our $VERSION = '0.12';
 
-my $DB_FILE = 'wnjpn-1.1.db';
+my $DB_FILE = 'wnjpn-1.1_and_synonyms-1.0.db';
 
 
 sub _options
@@ -75,7 +76,7 @@ sub Word
 
     $sth->execute($synset, $lang);
 
-    my @words = map { $_->[0] =~ s/_/ /g; $_->[0]; } @{$sth->fetchall_arrayref};
+    my @words = map { $_->[0] =~ tr/_/ /; $_->[0]; } @{$sth->fetchall_arrayref};
 
     Carp::carp "Word: there are no words for $synset in $lang" if $self->{verbose} && ! scalar @words;
 
@@ -100,7 +101,7 @@ sub Synset
 
     my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
 
-    Carp::carp "Synset: there are no synsets for $word in $lang" if $self->{verbose} && ! scalar @synsets;
+    Carp::carp "Synset: there are no synsets for '$word' in $lang" if $self->{verbose} && ! scalar @synsets;
 
     return @synsets;
 }
@@ -124,7 +125,7 @@ sub SynPos
 
     my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
 
-    Carp::carp "SynPos: there are no synsets for $word corresponding to '$pos' and '$lang'" if $self->{verbose} && ! scalar @synsets;
+    Carp::carp "SynPos: there are no synsets for '$word' corresponding to '$pos' and '$lang'" if $self->{verbose} && ! scalar @synsets;
 
     return @synsets;
 }
@@ -223,6 +224,53 @@ sub AllSynsets
     $sth->execute;
     my @synsets = map {$_->[0]} @{$sth->fetchall_arrayref};
     return \@synsets;
+}
+
+sub WordID
+{
+    my ($self, $word, $pos, $lang) = @_;
+
+    $word =~ tr/ /_/;
+    $lang = 'jpn' unless defined $lang;
+
+    my $sth
+        = $self->{dbh}->prepare
+        (
+            'SELECT wordid FROM word
+              WHERE lemma = ?
+                AND pos   = ?
+                AND lang  = ?'
+        );
+
+    $sth->execute($word, $pos, $lang);
+
+    my ($wordid) = map {$_->[0]} @{$sth->fetchall_arrayref};
+
+    Carp::carp "WordID: there is no WordID for '$word' corresponding to '$pos' and '$lang'" if $self->{verbose} && ! defined $wordid;
+
+    return $wordid;
+}
+
+sub Synonyms
+{
+    my ($self, $wordid) = @_;
+
+    my $sth
+        = $self->{dbh}->prepare
+        (
+            'SELECT lemma FROM word JOIN wordlink ON word.wordid = wordlink.wordid2
+              WHERE wordid1 = ?
+                AND link    = ?'
+        );
+
+    $sth->execute($wordid, 'syns');
+    my @synonyms = map {$_->[0]} @{$sth->fetchall_arrayref};
+
+    Carp::carp "Synonyms: there are no Synonyms for $wordid" if $self->{verbose} && ! scalar @synonyms;
+
+    # 一応順番を保持したいのでハッシュスライスは使わない
+    # uniq: The order of elements in the returned list is the same as in LIST.
+    return List::MoreUtils::uniq @synonyms;
 }
 
 1;
