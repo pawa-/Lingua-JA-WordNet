@@ -18,7 +18,7 @@ is_deeply(\@synsets, [qw/00476140-n 00471613-n/]);
 is_deeply(\@synsets, [qw/00471613-n 02799071-n/]);
 
 warning_is { @synsets = $wn->SynPos('Perl', 'n', 'jpn') }
-    "SynPos: there are no synsets for Perl corresponding to 'n' and 'jpn'", 'synpos of unknown word';
+    "SynPos: there are no synsets for 'Perl' corresponding to 'n' and 'jpn'", 'synpos of unknown word';
 
 is(scalar @synsets, 0);
 
