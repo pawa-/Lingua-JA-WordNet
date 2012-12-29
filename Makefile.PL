@@ -17,6 +17,8 @@ install_share;
 tests 't/*.t';
 author_tests 'xt';
 
+no_index directory => 'benchmark';
+
 resources(
     license    => 'http://dev.perl.org/licenses',
     repository => 'https://github.com/pawa-/Lingua-JA-WordNet',
