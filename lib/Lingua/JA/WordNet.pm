@@ -9,7 +9,7 @@ use Carp ();
 use File::ShareDir  ();
 use List::MoreUtils ();
 
-our $VERSION = '0.12';
+our $VERSION = '0.20';
 
 my $DB_FILE = 'wnjpn-1.1_and_synonyms-1.0.db';
 

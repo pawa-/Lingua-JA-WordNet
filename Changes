@@ -1,5 +1,11 @@
 Revision history for Perl extension Lingua::JA::WordNet
 
+0.20    Sun, 30 Dec 2012 00:16:46 +0900
+        - Added 14,197 synonym pairs (Japanese Wordnet Synonyms Database)
+        to bundled Japanese Wordnet database file
+        - Added 'Synonym' method and 'WordID' method
+        - Added 'Out of memory!' section to documentation
+
 0.12    Thu, 27 Dec 2012 09:40:31 +0900
         - Updated bundled Japanese WordNet database file from Ver.1.0 to Ver.1.1
         ( 'wnjpn-1.1.db' was actually Ver.1.0. (*_*) )
