@@ -12,6 +12,12 @@ subtest 'wordID has one synonym' => sub {
     my $wordID   = $wn->WordID('盛り上がり', 'n');
     my @synonyms = $wn->Synonym($wordID);
     is_deeply(\@synonyms, [qw/隆起/]);
+};
+
+subtest 'wordID has multiple synonyms' => sub {
+    my $wordID   = $wn->WordID('ねんねこ', 'n');
+    my @synonyms = $wn->Synonym($wordID);
+    is_deeply(\@synonyms, [qw/お休み ねね スリープ 就眠 御休み 眠り 睡り 睡眠/]);
 
     $wordID = $wn->WordID('勉学', 'n');
     @synonyms  = $wn->Synonym($wordID);
@@ -20,12 +26,6 @@ subtest 'wordID has one synonym' => sub {
     $wordID = $wn->WordID('勉学', 'v');
     @synonyms  = $wn->Synonym($wordID);
     is_deeply(\@synonyms, [qw/勉強 学ぶ 学習/]);
-};
-
-subtest 'wordID has multiple synonyms' => sub {
-    my $wordID   = $wn->WordID('ねんねこ', 'n');
-    my @synonyms = $wn->Synonym($wordID);
-    is_deeply(\@synonyms, [qw/お休み ねね スリープ 就眠 御休み 眠り 睡り 睡眠/]);
 };
 
 subtest 'wordID has duplicate synonyms' => sub {
@@ -38,7 +38,7 @@ subtest 'wordID has duplicate synonyms' => sub {
     is_deeply(\@synonyms, [qw/一新 刷新 更新/]);
 };
 
-subtest 'wordID exists only on right side of the lines of the tsv file' => sub {
+subtest 'wordID exists only on the right side of the lines of the tsv file' => sub {
     my $wordID   = $wn->WordID('楽しみ', 'n');
     my @synonyms = $wn->Synonym($wordID);
     is_deeply(\@synonyms,
