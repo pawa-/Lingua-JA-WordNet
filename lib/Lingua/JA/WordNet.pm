@@ -364,11 +364,11 @@ Returns all synsets.
 
 =head2 $wordID = $wn->WordID( $word, $pos [, $lang] )
 
-Returns word ID corresponding to $word, $pos and $lang.
+Returns the word ID corresponding to $word, $pos and $lang.
 
 =head2 @synonyms = $wn->Synonym($wordID)
 
-Returns synonyms of $wordID.
+Returns the synonyms of $wordID.
 
 This method works only under the bundled Japanese WordNet database file.
 
