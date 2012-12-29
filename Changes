@@ -1,5 +1,8 @@
 Revision history for Perl extension Lingua::JA::WordNet
 
+0.21    Sun, 30 Dec 2012 03:16:18 +0900
+        - Added 'no_index directory' to Makefile.PL
+
 0.20    Sun, 30 Dec 2012 00:16:46 +0900
         - Added 14,197 synonym pairs (Japanese Wordnet Synonyms Database)
         to bundled Japanese Wordnet database file
