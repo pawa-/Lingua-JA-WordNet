@@ -12,6 +12,13 @@ SYNOPSIS
       print "$words[0]\n";
       # -> レスリング
 
+      # Synonym method can access to Japanese WordNet Synonyms Database.
+      my $wordID   = $wn->WordID('ねんねこ', 'n');
+      my @synonyms = $wn->Synonym($wordID);
+
+      print "@synonyms\n";
+      # -> お休み ねね スリープ 就眠 御休み 眠り 睡り 睡眠
+
 DESCRIPTION
     Japanese WordNet is a semantic dictionary of Japanese.
     Lingua::JA::WordNet is yet another Perl module to look up entries in
@@ -56,6 +63,14 @@ METHODS
 
   $allsynsets_arrayref = $wn->AllSynsets()
     Returns all synsets.
+
+  $wordID = $wn->WordID( $word, $pos [, $lang] )
+    Returns word ID corresponding to $word, $pos and $lang.
+
+  @synonyms = $wn->Synonym($wordID)
+    Returns synonyms of $wordID.
+
+    This method works only under the bundled Japanese WordNet database file.
 
   LANGUAGES
     $lang can take 'jpn' or 'eng'. The default value is 'jpn'.
@@ -105,6 +120,11 @@ METHODS
 
     This is the result of the SQL query 'SELECT link, def FROM link_def'.
 
+Out of memory!
+    In rare cases, this error message is displayed during the installation
+    of this library. If this is displayed, please install this library
+    manually. (RT#82276)
+
 AUTHOR
     pawa <pawapawa@cpan.org>
 
@@ -114,8 +134,8 @@ SEE ALSO
     <http://twitter.com/LinguaJAWordNet>
 
 LICENSE
-    This library except bundled WordNet database file is free software; you
-    can redistribute it and/or modify it under the same terms as Perl
+    This library except the bundled WordNet database file is free software;
+    you can redistribute it and/or modify it under the same terms as Perl
     itself.
 
     The bundled WordNet database file complies with the following licenses:
